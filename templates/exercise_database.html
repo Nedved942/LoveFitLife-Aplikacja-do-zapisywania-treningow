@@ -11,60 +11,31 @@
         {% if list_of_exercise %}
             <h3 class="m-3 text-center">{{ body_part }}</h3>
 
-            <div class="w-100">
-                <table class="table table-striped table-hover">
-                    <thead>
+            <table class="table table-striped table-hover mb-5">
+                <thead>
+                <tr>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Nazwa ćwiczenia</th>
+                    <th scope="col">Nazwa [ang]</th>
+                    <th scope="col">Pozostałe aktywne partie mięśniowe</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for exercise in list_of_exercise %}
                     <tr>
-                        <th scope="col">Symbol</th>
-                        <th scope="col">Nazwa ćwiczenia</th>
-                        <th scope="col">Nazwa [ang]</th>
-                        <th scope="col">Pozostałe aktywne partie mięśniowe</th>
+                        <th scope="row">{{ exercise.abbreviation }}</th>
+                        <td class="col-md-4">{{ exercise.name }}</td>
+                        <td class="col-md-3">{{ exercise.name_ang }}</td>
+                        <td class="col-md-4">
+                            {% for body_part in exercise.another_body_parts %}
+                                {{ body_part }}
+                            {% endfor %}
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for exercise in list_of_exercise %}
-                        <tr>
-                            <th scope="row">{{ exercise.abbreviation }}</th>
-                            <td>{{ exercise.name }}</td>
-                            <td>{{ exercise.name_ang }}</td>
-                            <td>
-                                {% for body_part in exercise.another_body_parts %}
-                                    {{ body_part }}
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                {% endfor %}
+                </tbody>
+            </table>
         {% endif %}
     {% endfor %}
 
 {% endblock %}
-
-{#
-            <h3 class="m-3 text-center">{{ body_part }}</h3>
-
-            <div class="w-100">
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col">Symbol</th>
-                        <th scope="col">Nazwa ćwiczenia</th>
-                        <th scope="col">Nazwa [ang]</th>
-                        <th scope="col">Pozostałe aktywne partie mięśniowe</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for exercise in body_part %}
-                        <tr>
-                            <th scope="row">{{ exercise.abbreviation }}</th>
-                            <td>{{ exercise.name }}</td>
-                            <td>{{ exercise.name_ang }}</td>
-                            <td>{{ exercise.another_body_parts }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-#}

@@ -33,7 +33,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link {{ 'active text-decoration-underline' if active_page == 'exercise_database' else '' }}" href="{{ url_for('exercise_database') }}">Baza ćwiczeń</a>
+            <a class="nav-link {{ 'active text-decoration-underline' if active_page == 'exercise_database_view' else '' }}" href="{{ url_for('exercise_database_view') }}">Baza ćwiczeń</a>
             <a class="nav-link {{ 'active text-decoration-underline' if active_page == 'add_workout' else '' }}" href="{{ url_for('add_workout') }}">Dodaj trening</a>
           </div>
         </div>

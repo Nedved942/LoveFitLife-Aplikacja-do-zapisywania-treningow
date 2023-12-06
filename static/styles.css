@@ -1,0 +1,13 @@
+body {
+background-image: url('/static/grey-pattern.jpg');
+background-size: cover; /* Dopasuj obrazek do rozmiaru okna przeglądarki */
+}
+
+.navbar-nav a {
+margin-right: 20px;
+}
+
+.navbar-brand {
+margin-right: 40px;
+margin-left: 20px;
+}

@@ -47,7 +47,25 @@ def exercise_database_view():
     return render_template("exercise_database.html", sorted_exercises=sorted_exercises)
 
 
+@app.route("/dodawanie-cwiczenia", methods=["GET", "POST"])
+def add_exercise():
+    pass
+    return render_template("add_exercise.html")
+
+
 @app.route("/dodawanie-treningu", methods=["GET", "POST"])
 def add_workout():
     pass
     return render_template("add_workout.html")
+
+
+@app.route("/historia-treningow", methods=["GET", "POST"])
+def trainings_history_view():
+    pass
+    return render_template("trainings_history.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    pass
+    return render_template("register.html")

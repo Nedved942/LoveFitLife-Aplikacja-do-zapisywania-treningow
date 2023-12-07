@@ -17,7 +17,7 @@
                     <th scope="col">Symbol</th>
                     <th scope="col">Nazwa ćwiczenia</th>
                     <th scope="col">Nazwa [ang]</th>
-                    <th scope="col">Pozostałe aktywne partie mięśniowe</th>
+                    <th scope="col">Poboczna aktywna partia mięśniowa</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,11 +26,7 @@
                         <th scope="row">{{ exercise.abbreviation }}</th>
                         <td class="col-md-4">{{ exercise.name }}</td>
                         <td class="col-md-3">{{ exercise.name_ang }}</td>
-                        <td class="col-md-4">
-                            {% for body_part in exercise.another_body_parts %}
-                                {{ body_part }}
-                            {% endfor %}
-                        </td>
+                        <td class="col-md-4">{{ exercise.another_body_parts }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

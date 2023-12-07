@@ -13,7 +13,7 @@ class Exercises(db.Model):
     name = db.Column(db.String(120), nullable=False, unique=True)
     name_ang = db.Column(db.String(120), unique=True)
     main_body_part = db.Column(db.String(120), nullable=False)
-    another_body_parts = db.Column(db.Text)
+    another_body_part = db.Column(db.String(120))
     description = db.Column(db.Text)
     media = db.Column(db.LargeBinary)
     link = db.Column(db.String)

@@ -28,8 +28,8 @@
             <div class="form-text">Wybierz główną partię mięśniową</div>
         </div>
         <div class="mb-3">
-            <label class="form-label fs-4" for="choise_another_body_parts">Poboczna partia mięśniowa:</label><br>
-            <select id="choise_another_body_parts" name="another_body_parts">
+            <label class="form-label fs-4" for="choise_another_body_part">Poboczna partia mięśniowa:</label><br>
+            <select id="choise_another_body_part" name="another_body_part">
                 {% for body_part in body_parts %}
                     <option value="{{ body_part[0] }}">{{ body_part[0] }}</option>
                 {% endfor %}

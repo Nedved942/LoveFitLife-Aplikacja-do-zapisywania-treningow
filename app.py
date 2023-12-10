@@ -1,3 +1,5 @@
+import csv
+
 from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from copy import deepcopy
@@ -29,9 +31,30 @@ def get_abbreviation_of_exercise(body_part):
     return str(count_of_exercises + 1) + abbreviation_character
 
 
+# def read_csv(path_file):
+#     with open(path_file) as file_stream:
+#         rows_list = []
+#         object_csv_file = csv.reader(file_stream)
+#         for row in object_csv_file:
+#             rows_list.append(row)
+#         app.logger.info(type(object_csv_file))
+#         app.logger.info(rows_list)
+#         app.logger.info(type(rows_list))
+#     pass
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
-    pass
+    # Pobranie pliku body_parts.csv od użytkownika
+    body_parts_file = request.form.get("body_parts_file")
+    exercise_database_file = request.form.get("exercise_database_file")
+    # read_csv(body_parts_file)
+
+    app.logger.info(body_parts_file)
+    app.logger.info(type(body_parts_file))
+
+    app.logger.info(exercise_database_file)
+    app.logger.info(type(exercise_database_file))
     return render_template("index.html")
 
 
@@ -99,3 +122,5 @@ def trainings_history_view():
 def register():
     pass
     return render_template("register.html")
+
+# TODO Utwórz relacje w tabelach w bazie danych !

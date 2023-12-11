@@ -1,32 +1,34 @@
 from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from copy import deepcopy
-from flask_alembic import Alembic
+# from flask_alembic import Alembic
 from flask_migrate import Migrate
-from json import loads, JSONDecodeError
+# from json import loads, JSONDecodeError
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "Secret_key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 
 db = SQLAlchemy()
+migrate = Migrate()
 
 from models import BodyParts, Exercises
 
 db.init_app(app)
 
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
-migrate = Migrate(app, db)
+migrate.init_app(app, db)
 
-alembic = Alembic()
-alembic.init_app(app)
+# alembic = Alembic()
+# alembic.init_app(app)
 
 
 def get_abbreviation_of_exercise(body_part):
-    abbreviation_character = BodyParts.query.filter(BodyParts.body_part == body_part).value(BodyParts.abbreviation_character)
+    abbreviation_character = BodyParts.query.filter(BodyParts.body_part == body_part).value(
+        BodyParts.abbreviation_character)
     app.logger.info(abbreviation_character)
     count_of_exercises = len(Exercises.query.filter(Exercises.main_body_part == body_part).all())
     if not count_of_exercises:

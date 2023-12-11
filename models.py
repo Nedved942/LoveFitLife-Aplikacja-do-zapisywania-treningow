@@ -5,6 +5,10 @@ class BodyParts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body_part = db.Column(db.String, nullable=False, unique=True)
     abbreviation_character = db.Column(db.String(10), nullable=False, unique=True)
+    exercises_main_body_part = db.relationship("Exercises", foreign_keys="Exercises.main_body_part_id",
+                                               backref="main_body_part", lazy=True)
+    exercises_another_body_part = db.relationship("Exercises", foreign_keys="Exercises.another_body_part_id",
+                                                  backref="another_body_part", lazy=True)
 
 
 class Exercises(db.Model):
@@ -12,8 +16,14 @@ class Exercises(db.Model):
     abbreviation = db.Column(db.String(10), nullable=False, unique=True)
     name = db.Column(db.String(120), nullable=False, unique=True)
     name_ang = db.Column(db.String(120), unique=True)
-    main_body_part = db.Column(db.String(120), nullable=False)
-    another_body_part = db.Column(db.String(120))
+    main_body_part_id = db.Column(db.Integer, db.ForeignKey("body_parts.id"), nullable=False)
+    another_body_part_id = db.Column(db.Integer, db.ForeignKey("body_parts.id"))
     description = db.Column(db.Text)
     media = db.Column(db.LargeBinary)
     link = db.Column(db.String)
+
+
+# class Trainings(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name_of_exercise = db.Column(db.String(120), nullable=False, unique=True)
+#     weight =

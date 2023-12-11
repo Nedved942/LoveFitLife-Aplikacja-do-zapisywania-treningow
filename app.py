@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from copy import deepcopy
 from flask_migrate import Migrate
+from csv import reader
 # from json import loads, JSONDecodeError
 
 app = Flask(__name__)
@@ -29,16 +30,28 @@ def get_abbreviation_of_exercise(body_part):
     return str(count_of_exercises + 1) + abbreviation_character
 
 
-# def read_csv(path_file):
-#     with open(path_file) as file_stream:
-#         rows_list = []
-#         object_csv_file = csv.reader(file_stream)
-#         for row in object_csv_file:
-#             rows_list.append(row)
-#         app.logger.info(type(object_csv_file))
-#         app.logger.info(rows_list)
-#         app.logger.info(type(rows_list))
-#     pass
+def read_body_parts(path_file):
+    with open(path_file) as file_stream:
+        list_of_all = []
+        dict_of_all = {}
+        object_csv_file = reader(file_stream)
+        for row in object_csv_file:
+            row_list = row[0].split(";")
+            list_of_all.append(row_list)
+        for ind, body_part in enumerate(list_of_all):
+            dict_of_all[ind] = {
+                "body_part": body_part[0],
+                "abbreviation_character": body_part[1]
+            }
+    return dict_of_all
+
+
+def add_body_parts(dict_of_body_parts):
+    for key, value in dict_of_body_parts.items():
+        new_body_part = BodyParts(body_part=value["body_part"],
+                                  abbreviation_character=value["abbreviation_character"])
+        db.session.add(new_body_part)
+    db.session.commit()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -46,9 +59,9 @@ def index():
     # Pobranie pliku body_parts.csv od użytkownika
     body_parts_file = request.form.get("body_parts_file")
     exercise_database_file = request.form.get("exercise_database_file")
-    # read_csv(body_parts_file)
 
     if body_parts_file:
+        add_body_parts(read_body_parts(body_parts_file))
         flash("Dodano plik z partiami ciała do bazy danych.")
 
     if exercise_database_file:

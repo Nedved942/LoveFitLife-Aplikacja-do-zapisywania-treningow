@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from copy import deepcopy
-# from flask_alembic import Alembic
 from flask_migrate import Migrate
 # from json import loads, JSONDecodeError
 
@@ -15,15 +14,7 @@ migrate = Migrate()
 from models import BodyParts, Exercises
 
 db.init_app(app)
-
-
-# with app.app_context():
-#     db.create_all()
-
 migrate.init_app(app, db)
-
-# alembic = Alembic()
-# alembic.init_app(app)
 
 
 def get_abbreviation_of_exercise(body_part):
@@ -135,5 +126,3 @@ def trainings_history_view():
 def register():
     pass
     return render_template("register.html")
-
-# TODO Utwórz relacje w tabelach w bazie danych !

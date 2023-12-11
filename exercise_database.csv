@@ -1,10 +1,10 @@
-1;Wyciskanie sztangi na klatkê;Barbell bench press;Wielostawowe;Klatka
-2;Martwy ci¹g;Deadlift;Wielostawowe;Grzbiet
-3;Przysiad ze sztang¹;Deep squat;Wielostawowe;Uda
-4;Wyciskanie sztangi sprzed g³owy (OHP);Over head press;Wielostawowe;Barki
-5;Pompki;Push-ups;Klatka;Triceps
-6;Dipy na porêczach (na klatkê);Chest dip;Klatka;Triceps
-7;Podci¹ganie na dr¹¿ku;Chin up;Grzbiet;Biceps
-8;Wios³owanie sztang¹;Bent over row;Grzbiet;Biceps
-9;Uginanie ramion ze sztang¹ stoj¹c;Standing barbell curl;Biceps;
-10;"Sk³ony ze sztang¹ trzyman¹ na karku (""dzieñ dobry"")";Good Mornings;Grzbiet;
+1;Wyciskanie sztangi na klatkê;Barbell bench press;1;2
+2;Martwy ci¹g;Deadlift;1;3
+3;Przysiad ze sztang¹;Deep squat;1;4
+4;Wyciskanie sztangi sprzed g³owy (OHP);Over head press;1;5
+5;Pompki;Push-ups;2;7
+6;Dipy na porêczach (na klatkê);Chest dip;2;7
+7;Podci¹ganie na dr¹¿ku;Chin up;3;6
+8;Wios³owanie sztang¹;Bent over row;3;6
+9;Uginanie ramion ze sztang¹ stoj¹c;Standing barbell curl;6;
+10;"Sk³ony ze sztang¹ trzyman¹ na karku (""dzieñ dobry"")";Good Mornings;3;

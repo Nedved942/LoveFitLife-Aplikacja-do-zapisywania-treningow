@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from copy import deepcopy
 from flask_migrate import Migrate
 from csv import reader
-# from json import loads, JSONDecodeError
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "Secret_key"
@@ -22,7 +21,9 @@ def get_abbreviation_of_exercise(body_part):
     abbreviation_character = BodyParts.query.filter(BodyParts.body_part == body_part).value(
         BodyParts.abbreviation_character)
     app.logger.info(abbreviation_character)
-    count_of_exercises = len(Exercises.query.filter(Exercises.main_body_part == body_part).all())
+    count_of_exercises = len(Exercises.query.filter(Exercises.main_body_part_id ==
+                                                    BodyParts.query.filter(BodyParts.body_part == body_part).value(
+                                                        BodyParts.id)).all())
     if not count_of_exercises:
         count_of_exercises = 0
     if not abbreviation_character:
@@ -54,6 +55,37 @@ def add_body_parts(dict_of_body_parts):
     db.session.commit()
 
 
+def read_exercises(path_file):
+    with open(path_file) as file_stream:
+        list_of_all = []
+        dict_of_all = {}
+        object_csv_file = reader(file_stream)
+        for row in object_csv_file:
+            row_list = row[0].split(";")
+            list_of_all.append(row_list)
+        for ind, exercise in enumerate(list_of_all):
+            dict_of_all[ind] = {
+                "name": exercise[0],
+                "name_ang": exercise[1],
+                "main_body_part_id": BodyParts.query.filter(BodyParts.body_part == exercise[2]).value(
+                    BodyParts.id),
+                "another_body_part_id": BodyParts.query.filter(BodyParts.body_part == exercise[3]).value(
+                    BodyParts.id),
+                "body_part": exercise[2]
+            }
+    return dict_of_all
+
+
+def add_exercises(dict_of_exercises):
+    for key, value in dict_of_exercises.items():
+        new_exercise = Exercises(abbreviation=get_abbreviation_of_exercise(value["body_part"]),
+                                 name=value["name"], name_ang=value["name_ang"],
+                                 main_body_part_id=value["main_body_part_id"],
+                                 another_body_part_id=value["another_body_part_id"])
+        db.session.add(new_exercise)
+        db.session.commit()
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Pobranie pliku body_parts.csv od użytkownika
@@ -65,6 +97,7 @@ def index():
         flash("Dodano plik z partiami ciała do bazy danych.")
 
     if exercise_database_file:
+        add_exercises(read_exercises(exercise_database_file))
         flash("Dodano plik z ćwiczeniami do bazy danych.")
 
     app.logger.info(body_parts_file)

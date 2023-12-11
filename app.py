@@ -1,8 +1,8 @@
-import csv
-
 from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from copy import deepcopy
+from flask_alembic import Alembic
+from flask_migrate import Migrate
 from json import loads, JSONDecodeError
 
 app = Flask(__name__)
@@ -18,6 +18,11 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+migrate = Migrate(app, db)
+
+alembic = Alembic()
+alembic.init_app(app)
 
 
 def get_abbreviation_of_exercise(body_part):
@@ -49,6 +54,12 @@ def index():
     body_parts_file = request.form.get("body_parts_file")
     exercise_database_file = request.form.get("exercise_database_file")
     # read_csv(body_parts_file)
+
+    if body_parts_file:
+        flash("Dodano plik z partiami ciała do bazy danych.")
+
+    if exercise_database_file:
+        flash("Dodano plik z ćwiczeniami do bazy danych.")
 
     app.logger.info(body_parts_file)
     app.logger.info(type(body_parts_file))

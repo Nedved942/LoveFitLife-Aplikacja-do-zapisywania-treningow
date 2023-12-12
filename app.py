@@ -48,11 +48,25 @@ def read_body_parts(path_file):
 
 
 def add_body_parts(dict_of_body_parts):
+    body_parts = BodyParts.query.all()
+    body_parts_list = []
+    abbreviation_character_list = []
+    record = 0
+
+    for body_part in body_parts:
+        body_parts_list.append(body_part.body_part)
+        abbreviation_character_list.append(body_part.abbreviation_character)
+
     for key, value in dict_of_body_parts.items():
-        new_body_part = BodyParts(body_part=value["body_part"],
-                                  abbreviation_character=value["abbreviation_character"])
-        db.session.add(new_body_part)
+        if value["body_part"] in body_parts_list or value["abbreviation_character"] in abbreviation_character_list:
+            pass
+        else:
+            new_body_part = BodyParts(body_part=value["body_part"],
+                                      abbreviation_character=value["abbreviation_character"])
+            record += 1
+            db.session.add(new_body_part)
     db.session.commit()
+    flash(f"Liczba dodanych wpisów do bazy: {record}.")
 
 
 def read_exercises(path_file):
@@ -94,17 +108,11 @@ def index():
 
     if body_parts_file:
         add_body_parts(read_body_parts(body_parts_file))
-        flash("Dodano plik z partiami ciała do bazy danych.")
+        flash("Wczytano plik z partiami ciała.")
 
     if exercise_database_file:
         add_exercises(read_exercises(exercise_database_file))
-        flash("Dodano plik z ćwiczeniami do bazy danych.")
-
-    app.logger.info(body_parts_file)
-    app.logger.info(type(body_parts_file))
-
-    app.logger.info(exercise_database_file)
-    app.logger.info(type(exercise_database_file))
+        flash("Wczytano plik z ćwiczeniami.")
     return render_template("index.html")
 
 
@@ -116,10 +124,6 @@ def exercise_database_view():
     for body_part in body_parts:
         exercises_list = Exercises.query.filter(Exercises.main_body_part_id == body_part.id).all()
         sorted_exercises[body_part.body_part] = exercises_list
-
-    app.logger.info(body_parts)
-    app.logger.info(body_parts[0].body_part)
-    app.logger.info(sorted_exercises)
     return render_template("exercise_database.html", sorted_exercises=sorted_exercises)
 
 

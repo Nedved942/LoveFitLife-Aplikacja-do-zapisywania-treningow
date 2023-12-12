@@ -112,11 +112,14 @@ def index():
 def exercise_database_view():
     # Pobranie danych z tabel i przypisanie ich posortowanych wg partii mięśniowych do słownika
     sorted_exercises = {}
-    body_parts = BodyParts.query.with_entities(BodyParts.body_part).order_by(BodyParts.id).all()
+    body_parts = BodyParts.query.order_by(BodyParts.id).all()
     for body_part in body_parts:
-        sorted_exercises[body_part[0]] = (Exercises.query.filter(Exercises.main_body_part == body_part[0]).all())
+        exercises_list = Exercises.query.filter(Exercises.main_body_part_id == body_part.id).all()
+        sorted_exercises[body_part.body_part] = exercises_list
 
-    # app.logger.info(body_parts)
+    app.logger.info(body_parts)
+    app.logger.info(body_parts[0].body_part)
+    app.logger.info(sorted_exercises)
     return render_template("exercise_database.html", sorted_exercises=sorted_exercises)
 
 

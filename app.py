@@ -91,13 +91,27 @@ def read_exercises(path_file):
 
 
 def add_exercises(dict_of_exercises):
+    exercises = Exercises.query.all()
+    name_of_exercises_list = []
+    name_ang_of_exercises_list = []
+    record = 0
+
+    for exercise in exercises:
+        name_of_exercises_list.append(exercise.name)
+        name_ang_of_exercises_list.append(exercise.name_ang)
+
     for key, value in dict_of_exercises.items():
-        new_exercise = Exercises(abbreviation=get_abbreviation_of_exercise(value["body_part"]),
-                                 name=value["name"], name_ang=value["name_ang"],
-                                 main_body_part_id=value["main_body_part_id"],
-                                 another_body_part_id=value["another_body_part_id"])
-        db.session.add(new_exercise)
-        db.session.commit()
+        if value["name"] in name_of_exercises_list or value["name_ang"] in name_ang_of_exercises_list:
+            pass
+        else:
+            new_exercise = Exercises(abbreviation=get_abbreviation_of_exercise(value["body_part"]),
+                                     name=value["name"], name_ang=value["name_ang"],
+                                     main_body_part_id=value["main_body_part_id"],
+                                     another_body_part_id=value["another_body_part_id"])
+            db.session.add(new_exercise)
+            record += 1
+            db.session.commit()
+    flash(f"Liczba dodanych wpisów do bazy: {record}.")
 
 
 @app.route("/", methods=["GET", "POST"])

@@ -21,9 +21,39 @@ class Exercises(db.Model):
     description = db.Column(db.Text)
     media = db.Column(db.LargeBinary)
     link = db.Column(db.String)
+    exercises_done = db.relationship("ExerciseDone", foreign_keys="ExerciseDone.exercise_id", backref="exercises_done",
+                                     lazy=True)
 
 
-# class Trainings(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name_of_exercise = db.Column(db.String(120), nullable=False, unique=True)
-#     weight =
+class ExerciseDetails(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    set = db.Column(db.Integer, nullable=False, default=1)
+    reps_per_set = db.Column(db.Integer, nullable=False)
+    weight = db.Column(db.Float)
+    exercise_done_id = db.Column(db.Integer, db.ForeignKey("exercise_done.id"), nullable=False)
+
+
+class ExerciseDone(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercises.id"), nullable=False)
+    training_id = db.Column(db.Integer, db.ForeignKey("trainings.id"), nullable=False)
+    exercise_details = db.relationship("ExerciseDetails", foreign_keys="ExerciseDetails.exercise_done_id",
+                                       backref="exercise_details", lazy=True, cascade="all, delete-orphan")
+
+
+class Trainings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(),
+                     server_default=db.func.current_timestamp())
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    exercises_done = db.relationship("ExerciseDone", foreign_keys="ExerciseDone.training_id",
+                                     backref="exercises_done", lazy=True, cascade="all, delete-orphan")
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(50))
+    password = db.Column(db.String(50))
+    nick = db.Column(db.String(50))
+    trainings = db.relationship("Trainings", foreign_keys="Trainings.user_id", backref="trainings", lazy=True,
+                                cascade="all, delete-orphan")

@@ -46,8 +46,9 @@ class Trainings(db.Model):
     date = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp(),
                      server_default=db.func.current_timestamp())
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    exercises_done = db.relationship("ExerciseDone", foreign_keys="ExerciseDone.training_id",
-                                     backref="exercises_done", lazy=True, cascade="all, delete-orphan")
+    exercises_done_in_training = db.relationship("ExerciseDone", foreign_keys="ExerciseDone.training_id",
+                                                 backref="exercises_done_in_training", lazy=True,
+                                                 cascade="all, delete-orphan")
 
 
 class User(db.Model):

@@ -22,6 +22,7 @@
             <a class="nav-link {{ 'active text-decoration-underline' if active_page == 'add_exercise' else '' }}" href="{{ url_for('add_exercise') }}">Dodaj ćwiczenie</a>
             <a class="nav-link {{ 'active text-decoration-underline' if active_page == 'add_workout' else '' }}" href="{{ url_for('add_workout') }}">Dodaj trening</a>
             <a class="nav-link {{ 'active text-decoration-underline' if active_page == 'trainings_history_view' else '' }}" href="{{ url_for('trainings_history_view') }}">Historia treningów</a>
+            <a class="nav-link {{ 'active text-decoration-underline' if active_page == 'login' else '' }}" href="{{ url_for('login') }}">Logowanie</a>
             <a class="nav-link {{ 'active text-decoration-underline' if active_page == 'register' else '' }}" href="{{ url_for('register') }}">Rejestracja</a>
           </div>
         </div>

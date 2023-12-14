@@ -54,8 +54,8 @@ class Trainings(db.Model):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(50))
-    password = db.Column(db.String(50))
-    nick = db.Column(db.String(50))
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(50), nullable=False)
+    nick = db.Column(db.String(50), nullable=False, unique=True)
     trainings = db.relationship("Trainings", foreign_keys="Trainings.user_id", backref="trainings", lazy=True,
                                 cascade="all, delete-orphan")

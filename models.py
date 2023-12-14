@@ -1,4 +1,5 @@
 from app import db
+from flask_login import UserMixin
 
 
 class BodyParts(db.Model):
@@ -51,7 +52,7 @@ class Trainings(db.Model):
                                                  cascade="all, delete-orphan")
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50))
     password = db.Column(db.String(50))

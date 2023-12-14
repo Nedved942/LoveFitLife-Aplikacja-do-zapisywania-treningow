@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% set title="Dodawanie treningu" %}
+{% set active_page="add_workout" %}
+
+{% block content %}
+    <h3 class="mt-4 mb-5">Wprowadź swój trening:</h3>
+
+    <form class="w-25" action="{{ url_for('add_workout') }}">
+            <div class="mb-3">
+            <label class="form-label fs-4" for="choise_exercise">Nazwa ćwiczenia:</label><br>
+            <select id="choise_exercise" name="exercise">
+                {% for exercise in exercises %}
+                    <option value="{{ exercise }}">{{ exercise.abbreviation }} -- {{ exercise.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="form-text">Wybierz wykonane ćwiczenie.</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fs-4">Obciążenie [kg]:</label>
+            <input type="number" class="form-control" name="weight">
+            <div class="form-text">Wpisz obciążenie użyte w danym ćwiczeniu, w kilogramach (opcjonalne).</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fs-4">Serie:</label>
+            <input type="number" class="form-control" name="set">
+            <div class="form-text">Wpisz liczbę serii.</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fs-4">Powtórzenia:</label>
+            <input type="number" class="form-control" name="reps_per_set">
+            <div class="form-text">Wpisz liczbę powtórzeń.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Dodaj</button>
+    </form>
+
+
+{% endblock %}

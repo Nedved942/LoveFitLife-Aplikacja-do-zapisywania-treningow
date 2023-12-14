@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
 from copy import deepcopy
 from flask_migrate import Migrate
@@ -180,10 +180,24 @@ def add_exercise():
     return render_template("add_exercise.html", body_parts=body_parts, another_body_parts=another_body_parts)
 
 
+@app.route("/dodawanie-treningu/<training_id>", methods=["GET", "POST"])
 @app.route("/dodawanie-treningu", methods=["GET", "POST"])
 def add_workout():
-    pass
+    date = request.form.get("date")
+    # training_id = request.form.get("training_id")
+    #
+    # if date:
+    #     return redirect("add_new_workout.html")
+    #
     return render_template("add_workout.html")
+
+
+@app.route("/dodawanie-treningu/nowy", methods=["GET", "POST"])
+def add_new_workout():
+    exercises = Exercises.query.all()
+    date = request.form.get("date")
+    # TODO Dodawanie nowego treningu - data i user_id
+    return render_template("add_new_workout.html", exercises=exercises)
 
 
 @app.route("/historia-treningow", methods=["GET", "POST"])

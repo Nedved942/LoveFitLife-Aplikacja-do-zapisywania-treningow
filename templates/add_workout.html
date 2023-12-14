@@ -4,6 +4,30 @@
 {% set active_page="add_workout" %}
 
 {% block content %}
-
-
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 ms-5">
+                <h3 class="mt-4 mb-4">Wprowadź nowy trening:</h3>
+                <form action="{{ url_for('add_new_workout') }}">
+                    <div class="mb-3">
+                        <label class="form-label fs-4">Podaj datę [format]:</label>
+                        <input type="text" class="form-control" name="date">
+                        <div class="form-text">Wpisz datę nowego treningu (domyślna wartość to aktualna data).</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </form>
+            </div>
+            <div class="col-md-4 ms-auto me-5">
+                <h3 class="mt-4 mb-4">Zaaktualizuj istniejący trening:</h3>
+                <form action="{{ url_for('add_workout') }}">
+                    <div class="mb-3">
+                        <label class="form-label fs-4">Podaj numer swojego treningu:</label>
+                        <input type="text" class="form-control" name="training_id">
+                        <div class="form-text">Wpisz numer istniejącego treningu.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Aktualizuj</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

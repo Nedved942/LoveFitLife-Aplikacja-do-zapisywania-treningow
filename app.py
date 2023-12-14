@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, flash, redirect
+from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from copy import deepcopy
 from flask_migrate import Migrate
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from copy import deepcopy
 from csv import reader
 
 app = Flask(__name__)
@@ -10,11 +12,19 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 
 db = SQLAlchemy()
 migrate = Migrate()
+login_manager = LoginManager()
 
-from models import BodyParts, Exercises
+from models import BodyParts, Exercises, ExerciseDetails, ExerciseDone, Trainings, User
 
 db.init_app(app)
 migrate.init_app(app, db)
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 
 def get_abbreviation_of_exercise(body_part):
@@ -131,6 +141,7 @@ def index():
 
 
 @app.route("/baza-cwiczen", methods=["GET", "POST"])
+@login_required
 def exercise_database_view():
     # Pobranie danych z tabel i przypisanie ich posortowanych wg partii mięśniowych do słownika
     sorted_exercises = {}
@@ -142,6 +153,7 @@ def exercise_database_view():
 
 
 @app.route("/dodawanie-cwiczenia", methods=["GET", "POST"])
+@login_required
 def add_exercise():
     # Pobranie listy krotek z [0] elementem - dla każdej partii ciała
     body_parts = BodyParts.query.with_entities(BodyParts.body_part).order_by(BodyParts.id).all()
@@ -180,19 +192,20 @@ def add_exercise():
     return render_template("add_exercise.html", body_parts=body_parts, another_body_parts=another_body_parts)
 
 
-@app.route("/dodawanie-treningu/<training_id>", methods=["GET", "POST"])
 @app.route("/dodawanie-treningu", methods=["GET", "POST"])
+@login_required
 def add_workout():
     date = request.form.get("date")
-    # training_id = request.form.get("training_id")
+    training_id = request.form.get("training_id")
     #
     # if date:
-    #     return redirect("add_new_workout.html")
+    #     return redirect()
     #
     return render_template("add_workout.html")
 
 
 @app.route("/dodawanie-treningu/nowy", methods=["GET", "POST"])
+@login_required
 def add_new_workout():
     exercises = Exercises.query.all()
     date = request.form.get("date")
@@ -201,12 +214,70 @@ def add_new_workout():
 
 
 @app.route("/historia-treningow", methods=["GET", "POST"])
+@login_required
 def trainings_history_view():
     pass
     return render_template("trainings_history.html")
 
 
-@app.route("/register", methods=["GET", "POST"])
+@app.route("/rejestracja", methods=["GET", "POST"])
 def register():
-    pass
+    if request.method == "POST":
+        nick = request.form.get("nick")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        password_repeat = request.form.get("password_repeat")
+
+        list_to_check_entry = [nick, email, password, password_repeat]
+        if not all(list_to_check_entry):
+            flash("Wymagane wypełnienie wszystkich pól formularza.")
+        elif password_repeat != password:
+            flash("Powtórzone hasło jest inne niż pierwotne.")
+        else:
+            existing_user_email = User.query.filter_by(email=email).first()
+            existing_user_nick = User.query.filter_by(nick=nick).first()
+            if existing_user_email:
+                flash("Użytkownik o podanym emailu już istnieje.")
+            elif existing_user_nick:
+                flash("Użytkownik o podanej nazwie już istnieje. Wpisz inną nazwę.")
+            else:
+                password_hash = generate_password_hash(password)
+                new_user = User(email=email, password=password_hash, nick=nick)
+                db.session.add(new_user)
+                db.session.commit()
+                flash("Pomyślnie zarejestrowano użytkownika!")
+                return redirect(url_for('login'))
+
     return render_template("register.html")
+
+
+@app.route("/logowanie", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        user = User.query.filter_by(email=email).first()
+
+        list_to_check_entry = [email, password]
+        if not all(list_to_check_entry):
+            flash("W celu zalogowania wypełnij formularz.")
+        elif user and check_password_hash(user.password, password):
+            login_user(user)
+            flash("Zalogowano pomyślnie!")
+            return redirect(url_for('index'))
+        elif not user:
+            flash("Nie ma takiego użytkownika!")
+        elif user and not check_password_hash(user.password, password):
+            flash("Podano błędne hasło! Spróbuj ponownie.")
+        else:
+            flash("Błędne dane logowania.")
+    return render_template("login.html")
+
+
+@app.route("/wyloguj", methods=["GET", "POST"])
+@login_required
+def logout():
+    logout_user()
+    flash("Wylogowano pomyślnie!")
+    return redirect(url_for('login'))

@@ -5,6 +5,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from werkzeug.security import generate_password_hash, check_password_hash
 from copy import deepcopy
 from csv import reader
+from datetime import datetime
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "Secret_key"
@@ -124,6 +125,17 @@ def add_exercises(dict_of_exercises):
     flash(f"Liczba dodanych wpisów do bazy: {record}.")
 
 
+# Wymagana data w formacie DD-MM-YYYY, w przeciwnym wypadku zwraca False. Jeżeli date_string=None zwraca None
+def date_from_string_to_datetime(date_string):
+    date_format = "%Y-%m-%d"
+    date_object = None
+    try:
+        date_object = datetime.strptime(date_string, date_format)
+    except (ValueError, TypeError):
+        pass
+    return date_object
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Pobranie pliku body_parts.csv od użytkownika
@@ -195,22 +207,54 @@ def add_exercise():
 @app.route("/dodawanie-treningu", methods=["GET", "POST"])
 @login_required
 def add_workout():
-    date = request.form.get("date")
-    training_id = request.form.get("training_id")
-    #
-    # if date:
-    #     return redirect()
-    #
+    if request.method == "POST":
+        date_from_user = request.form.get("training_date")
+        training_id = request.form.get("training_id")
+        if date_from_user:
+            date = date_from_string_to_datetime(date_from_user)
+            new_training = Trainings(date=date, user_id=current_user.id)
+            db.session.add(new_training)
+            db.session.commit()
+            return redirect(url_for('edit_workout', edit_training_id=new_training.id))
+        elif date_from_user == "":
+            flash("Podaj datę treningu.")
+        if training_id:
+            check_current_user_training = Trainings.query.filter_by(id=training_id, user_id=current_user.id).first()
+            if check_current_user_training:
+                return redirect(url_for('edit_workout', edit_training_id=training_id))
+            else:
+                flash("Trening o podanym ID nie istnieje w bazie.")
+        elif training_id == "":
+            flash("Wprowadź ID treningu.")
     return render_template("add_workout.html")
 
 
-@app.route("/dodawanie-treningu/nowy", methods=["GET", "POST"])
+@app.route("/dodawanie-treningu/edytuj", methods=["GET", "POST"])
 @login_required
-def add_new_workout():
-    exercises = Exercises.query.all()
-    date = request.form.get("date")
-    # TODO Dodawanie nowego treningu - data i user_id
-    return render_template("add_new_workout.html", exercises=exercises)
+def edit_workout():
+    exercises = Exercises.query.order_by(Exercises.main_body_part_id).all()
+    edit_training_id = request.args.get('edit_training_id')
+    edit_training = Trainings.query.get(edit_training_id)
+    if request.method == "POST":
+        exercise_id = request.form.get("exercise_id")
+        exercise = Exercises.query.get(exercise_id)
+        edit_training_id = request.form.get("edit_training_id")
+        edit_training = Trainings.query.get(edit_training_id)
+        weight = request.form.get("weight")
+        sets = request.form.get("sets")
+        reps_per_set = request.form.get("reps_per_set")
+        if sets and reps_per_set:
+            new_exercise_done = ExerciseDone(exercise_id=exercise.id, training_id=edit_training_id)
+            db.session.add(new_exercise_done)
+            db.session.commit()
+            new_exercise_details = ExerciseDetails(weight=weight, set=sets, reps_per_set=reps_per_set,
+                                                   exercise_done_id=new_exercise_done.id)
+            db.session.add(new_exercise_details)
+            db.session.commit()
+        elif not sets or not reps_per_set:
+            flash("Uzupełnij ilość wykonanych serii i powtórzeń na serię.")
+    return render_template("edit_workout.html", exercises=exercises, edit_training_id=edit_training_id,
+                           edit_training=edit_training)
 
 
 @app.route("/historia-treningow", methods=["GET", "POST"])

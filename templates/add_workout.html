@@ -8,20 +8,20 @@
         <div class="row">
             <div class="col-md-4 ms-5">
                 <h3 class="mt-4 mb-4">Wprowadź nowy trening:</h3>
-                <form action="{{ url_for('add_new_workout') }}">
+                <form action="{{ url_for('add_workout') }}" method="post">
                     <div class="mb-3">
-                        <label class="form-label fs-4">Podaj datę [format]:</label>
-                        <input type="text" class="form-control" name="date">
-                        <div class="form-text">Wpisz datę nowego treningu (domyślna wartość to aktualna data).</div>
+                        <label class="form-label fs-4">Podaj datę:</label>
+                        <input type="date" class="form-control" name="training_date">
+                        <div class="form-text">Wpisz datę nowego treningu.</div>
                     </div>
                     <button type="submit" class="btn btn-primary">Dodaj</button>
                 </form>
             </div>
             <div class="col-md-4 ms-auto me-5">
-                <h3 class="mt-4 mb-4">Zaaktualizuj istniejący trening:</h3>
-                <form action="{{ url_for('add_workout') }}">
+                <h3 class="mt-4 mb-4">Zaaktualizuj zapisany trening:</h3>
+                <form action="{{ url_for('add_workout') }}" method="post">
                     <div class="mb-3">
-                        <label class="form-label fs-4">Podaj numer swojego treningu:</label>
+                        <label class="form-label fs-4">Podaj ID swojego treningu:</label>
                         <input type="text" class="form-control" name="training_id">
                         <div class="form-text">Wpisz numer istniejącego treningu.</div>
                     </div>

@@ -37,6 +37,10 @@
       </div>
     </nav>
 
+    {% if current_user.is_authenticated %}
+    <div class="form-text text-end">Aktywna sesja użytkownika: {{ current_user.nick }}</div>
+    {% endif %}
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul>

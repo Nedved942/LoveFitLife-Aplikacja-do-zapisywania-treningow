@@ -8,7 +8,7 @@ Jak rozpocząć?
 - Zarejestruj się na stronie poprzez formularz 'Rejestracja'.
 - Na stronie głównej kliknij przycisk "Załaduj partie mięśniowe".
 - Następnie kliknij przycisk "Załaduj ćwiczenia".
-Gotowe! Możesz zacząć wprowadzać swoje treningi.
+- Gotowe! Możesz zacząć wprowadzać swoje treningi.
 
 Uwaga: Powyższe polecenie importuje pliki w formacie csv z głównego folderu repozytorium. Jeśli chcesz, możesz utworzyć lub zmienić ćwiczenia w plikach i dodawać według własnych upodobań. Pamiętaj, aby poprawnie wprowadzić dane. W przypadku, gdy nazwa ćwiczenia lub symbol będą zdublowane lub gdy wystąpi niespójność w wartościach, ćwiczenie nie zostanie dodane do bazy lub zostanie dodane nieprawidłowo.
 

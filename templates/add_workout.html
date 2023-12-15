@@ -11,8 +11,7 @@
                 <form action="{{ url_for('add_workout') }}" method="post">
                     <div class="mb-3">
                         <label class="form-label fs-4">Podaj datę:</label>
-                        <input type="date" class="form-control" name="training_date">
-                        <div class="form-text">Wpisz datę nowego treningu.</div>
+                        <input type="date" class="form-control w-75" name="training_date">
                     </div>
                     <button type="submit" class="btn btn-primary">Dodaj</button>
                 </form>
@@ -22,8 +21,7 @@
                 <form action="{{ url_for('add_workout') }}" method="post">
                     <div class="mb-3">
                         <label class="form-label fs-4">Podaj ID swojego treningu:</label>
-                        <input type="text" class="form-control" name="training_id">
-                        <div class="form-text">Wpisz numer istniejącego treningu.</div>
+                        <input type="text" class="form-control w-50" name="training_id">
                     </div>
                     <button type="submit" class="btn btn-primary">Aktualizuj</button>
                 </form>

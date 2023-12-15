@@ -4,33 +4,37 @@
 {% set active_page="add_workout" %}
 
 {% block content %}
+    <div class="m-4 row">
+        <h3 class="col-md-4 text-start">Użytkownik: {{ edit_training.trainings.nick }}</h3>
+        <h3 class="col-md-4 text-center">Trening ID: {{ edit_training_id }}</h3>
+        <h3 class="col-md-4 text-end">Data: {{ edit_training.date.strftime("%d-%m-%Y") }}</h3>
+    </div>
 
-    <h3 class="m-4 text-center">Trening ID: {{ edit_training_id }} -- Data: {{ edit_training.date.strftime("%d-%m-%Y") }} -- Użytkownik: {{ edit_training.trainings.nick }}</h3>
     {% if edit_training.exercises_done_in_training %}
-    <table class="table table-striped table-hover mb-5">
-        <thead>
-        <tr>
-            <th scope="col">Symbol</th>
-            <th scope="col">Nazwa ćwiczenia</th>
-            <th scope="col">Obciążenie</th>
-            <th scope="col">Serie</th>
-            <th scope="col">Powtórzenia</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for exercise_done in edit_training.exercises_done_in_training %}
+        <table class="table table-striped table-hover mb-5">
+            <thead>
             <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Nazwa ćwiczenia</th>
+                <th scope="col">Obciążenie</th>
+                <th scope="col">Serie</th>
+                <th scope="col">Powtórzenia</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for exercise_done in edit_training.exercises_done_in_training %}
+                <tr>
                     <th scope="row">{{ exercise_done.exercises_done.abbreviation }}</th>
                     <td class="col-md-3">{{ exercise_done.exercises_done.name }}</td>
-                {% for exercise_details in exercise_done.exercise_details %}
-                    <td class="col-md-3">{{ exercise_details.weight }}</td>
-                    <td class="col-md-3">{{ exercise_details.set }}</td>
-                    <td class="col-md-3">{{ exercise_details.reps_per_set }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                    {% for exercise_details in exercise_done.exercise_details %}
+                        <td class="col-md-3">{{ exercise_details.weight }}</td>
+                        <td class="col-md-3">{{ exercise_details.set }}</td>
+                        <td class="col-md-3">{{ exercise_details.reps_per_set }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
 
     <h3 class="mt-4 mb-5">Wprowadź swój trening:</h3>

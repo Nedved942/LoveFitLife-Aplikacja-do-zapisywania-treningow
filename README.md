@@ -6,13 +6,11 @@ Jest to początkowa wersja aplikacji. Z biegiem czasu jej funkcjonalności będ�
 
 Jak rozpocząć?
 - Zarejestruj się na stronie poprzez formularz 'Rejestracja'.
-- Na stronie głównej wybierz plik "bodyparts.csv" z folderu głównego repozytorium.
-- Następnie kliknij przycisk "Załaduj partie mięśniowe".
-- Podobnie wybierz plik "exercise_database.csv" z folderu głównego repozytorium.
-- Kliknij przycisk "Załaduj ćwiczenia".
+- Na stronie głównej kliknij przycisk "Załaduj partie mięśniowe".
+- Następnie kliknij przycisk "Załaduj ćwiczenia".
 Gotowe! Możesz zacząć wprowadzać swoje treningi.
 
-Uwaga: Jeśli chcesz możesz utworzyć lub zmienić ćwiczenia w bazie danych i dodawać według własnych upodobań. Pamiętaj, aby poprawnie wprowadzić dane. W przypadku, gdy nazwa ćwiczenia lub symbol będzie zdublowane lub gdy wystąpi niespójność w wartościach, ćwiczenie nie zostanie dodane do bazy.
+Uwaga: Powyższe polecenie importuje pliki w formacie csv z głównego folderu repozytorium. Jeśli chcesz, możesz utworzyć lub zmienić ćwiczenia w plikach i dodawać według własnych upodobań. Pamiętaj, aby poprawnie wprowadzić dane. W przypadku, gdy nazwa ćwiczenia lub symbol będą zdublowane lub gdy wystąpi niespójność w wartościach, ćwiczenie nie zostanie dodane do bazy lub zostanie dodane nieprawidłowo.
 
 
 Owocnej pracy nad swoją sprawnością fizyczną!

@@ -114,6 +114,8 @@ def add_exercises(dict_of_exercises):
     for key, value in dict_of_exercises.items():
         if value["name"] in name_of_exercises_list or value["name_ang"] in name_ang_of_exercises_list:
             pass
+        elif not value["main_body_part_id"]:
+            pass
         else:
             new_exercise = Exercises(abbreviation=get_abbreviation_of_exercise(value["body_part"]),
                                      name=value["name"], name_ang=value["name_ang"],
@@ -243,6 +245,8 @@ def edit_workout():
         weight = request.form.get("weight")
         sets = request.form.get("sets")
         reps_per_set = request.form.get("reps_per_set")
+        if weight == "":
+            weight = 0
         if sets and reps_per_set:
             new_exercise_done = ExerciseDone(exercise_id=exercise.id, training_id=edit_training_id)
             db.session.add(new_exercise_done)
@@ -260,8 +264,8 @@ def edit_workout():
 @app.route("/historia-treningow", methods=["GET", "POST"])
 @login_required
 def trainings_history_view():
-    pass
-    return render_template("trainings_history.html")
+    current_user_trainings = Trainings.query.filter_by(user_id=current_user.id).all()
+    return render_template("trainings_history.html", current_user_trainings=current_user_trainings)
 
 
 @app.route("/rejestracja", methods=["GET", "POST"])

@@ -146,7 +146,6 @@ def index():
     # Pobranie pliku body_parts.csv od użytkownika
     body_parts_file = request.form.get("body_parts_file")
     exercise_database_file = request.form.get("exercise_database_file")
-
     if body_parts_file:
         add_body_parts(read_body_parts(body_parts_file))
         flash("Wczytano plik z partiami ciała.")
@@ -192,16 +191,24 @@ def add_exercise():
     list_to_check_entry = [exercise_name_from_user, main_body_part_from_user]
     if all(list_to_check_entry):
         main_body_part_id_from_user = BodyParts.query.filter(main_body_part_from_user == BodyParts.body_part).first().id
-        another_body_part_id_from_user = BodyParts.query.filter(another_body_part_from_user ==
-                                                                BodyParts.body_part).first().id
-        # Dodanie do tabeli Exercises nowego ćwiczenia
-        abbreviation_new_exercise = get_abbreviation_of_exercise(main_body_part_from_user)
-        new_exercise = Exercises(abbreviation=abbreviation_new_exercise, name=exercise_name_from_user,
-                                 name_ang=exercise_name_ang_from_user, main_body_part_id=main_body_part_id_from_user,
-                                 another_body_part_id=another_body_part_id_from_user)
-        db.session.add(new_exercise)
-        db.session.commit()
-        flash("Dodano ćwiczenie do bazy danych!")
+        try:
+            another_body_part_id_from_user = BodyParts.query.filter(another_body_part_from_user ==
+                                                                    BodyParts.body_part).first().id
+        except AttributeError:
+            another_body_part_id_from_user = ""
+
+        check_name_exercises_repeat = Exercises.query.filter_by(name=exercise_name_from_user).first()
+        if check_name_exercises_repeat:
+            flash("Ćwiczenie o podanej nazwie istnieje już w bazie!")
+        else:
+            # Dodanie do tabeli Exercises nowego ćwiczenia
+            abbreviation_new_exercise = get_abbreviation_of_exercise(main_body_part_from_user)
+            new_exercise = Exercises(abbreviation=abbreviation_new_exercise, name=exercise_name_from_user,
+                                     name_ang=exercise_name_ang_from_user, main_body_part_id=main_body_part_id_from_user,
+                                     another_body_part_id=another_body_part_id_from_user)
+            db.session.add(new_exercise)
+            db.session.commit()
+            flash("Dodano ćwiczenie do bazy danych!")
 
     if main_body_part_from_user and not exercise_name_from_user:
         flash("Wymagane podanie nazwy ćwiczenia.")

@@ -18,20 +18,18 @@
             <div class="fs-5 col-md-8">
                 <p>Jak rozpocząć?</p>
                 <p>- Zarejestruj się na stronie poprzez formularz 'Rejestracja'.</p>
-                <p>- Na stronie głównej wybierz plik "bodyparts.csv" z folderu głównego repozytorium.</p>
-                <p>- Następnie kliknij przycisk "Załaduj partie mięśniowe".</p>
-                <p>- Podobnie wybierz plik "exercise_database.csv" z folderu głównego repozytorium. </p>
-                <p>- Kliknij przycisk "Załaduj ćwiczenia".</p>
+                <p>- Na stronie głównej kliknij przycisk "Załaduj partie mięśniowe".</p>
+                <p>- Następnie kliknij przycisk "Załaduj ćwiczenia".</p><br>
                 <p>Gotowe! Możesz zacząć wprowadzać swoje treningi.</p>
             </div>
             {% if current_user.is_authenticated %}
             <div class="col-md-2 w-25 mt-4">
                 <form class="mb-4 d-grid" action="{{ url_for('index') }}" method="POST">
-                    <input type="file" class="form-control mb-2" name="body_parts_file">
+                    <input type="text" class="form-control mb-2" name="body_parts_file" value="body_parts.csv" readonly>
                     <button type="submit" class="btn btn-primary">Załaduj partie mięśniowe</button>
                 </form>
                 <form class="d-grid" action="{{ url_for('index') }}" method="POST">
-                    <input type="file" class="form-control mb-2" name="exercise_database_file">
+                    <input type="text" class="form-control mb-2" name="exercise_database_file" value="exercise_database.csv" readonly>
                     <button type="submit" class="btn btn-primary">Załaduj ćwiczenia</button>
                 </form>
             </div>
@@ -40,7 +38,7 @@
     </div>
     <br>
     <div class="fs-5">
-        <p>Uwaga: Jeśli chcesz, możesz utworzyć lub zmienić ćwiczenia w bazie danych i dodawać według własnych upodobań. Pamiętaj, aby poprawnie wprowadzić dane. W przypadku, gdy nazwa ćwiczenia lub symbol będą zdublowane lub gdy wystąpi niespójność w wartościach, ćwiczenie nie zostanie dodane do bazy.</p>
+        <p>Uwaga: Powyższe polecenie importuje pliki w formacie csv z głównego folderu repozytorium. Jeśli chcesz, możesz utworzyć lub zmienić ćwiczenia w plikach i dodawać według własnych upodobań. Pamiętaj, aby poprawnie wprowadzić dane. W przypadku, gdy nazwa ćwiczenia lub symbol będą zdublowane lub gdy wystąpi niespójność w wartościach, ćwiczenie nie zostanie dodane do bazy lub zostanie dodane nieprawidlłowo.</p>
         <br>
     </div>
 

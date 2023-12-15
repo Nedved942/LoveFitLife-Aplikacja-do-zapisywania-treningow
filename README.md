@@ -5,6 +5,7 @@ Obecnie zawiera funkcje: wczytania swojej bazy ćwiczeń, przeglądnia bazy ćwi
 Jest to początkowa wersja aplikacji. Z biegiem czasu jej funkcjonalności będą rozszerzane.
 
 Jak rozpocząć?
+- Zarejestruj się na stronie poprzez formularz 'Rejestracja'.
 - Na stronie głównej wybierz plik "bodyparts.csv" z folderu głównego repozytorium.
 - Następnie kliknij przycisk "Załaduj partie mięśniowe".
 - Podobnie wybierz plik "exercise_database.csv" z folderu głównego repozytorium.

@@ -25,11 +25,11 @@
             {% if current_user.is_authenticated %}
             <div class="col-md-2 w-25 mt-4">
                 <form class="mb-4 d-grid" action="{{ url_for('index') }}" method="POST">
-                    <input type="text" class="form-control mb-2" name="body_parts_file" value="body_parts.csv" readonly>
+                    <input type="file" class="form-control mb-2" name="body_parts_file">
                     <button type="submit" class="btn btn-primary">Załaduj partie mięśniowe</button>
                 </form>
                 <form class="d-grid" action="{{ url_for('index') }}" method="POST">
-                    <input type="text" class="form-control mb-2" name="exercise_database_file" value="exercise_database.csv" readonly>
+                    <input type="file" class="form-control mb-2" name="exercise_database_file">
                     <button type="submit" class="btn btn-primary">Załaduj ćwiczenia</button>
                 </form>
             </div>

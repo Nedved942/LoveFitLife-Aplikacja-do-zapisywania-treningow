@@ -204,7 +204,8 @@ def add_exercise():
             # Dodanie do tabeli Exercises nowego ćwiczenia
             abbreviation_new_exercise = get_abbreviation_of_exercise(main_body_part_from_user)
             new_exercise = Exercises(abbreviation=abbreviation_new_exercise, name=exercise_name_from_user,
-                                     name_ang=exercise_name_ang_from_user, main_body_part_id=main_body_part_id_from_user,
+                                     name_ang=exercise_name_ang_from_user,
+                                     main_body_part_id=main_body_part_id_from_user,
                                      another_body_part_id=another_body_part_id_from_user)
             db.session.add(new_exercise)
             db.session.commit()

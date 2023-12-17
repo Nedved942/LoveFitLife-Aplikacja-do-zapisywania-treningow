@@ -197,6 +197,9 @@ def add_exercise():
         except AttributeError:
             another_body_part_id_from_user = ""
 
+        if exercise_name_ang_from_user == "":
+            exercise_name_ang_from_user = None
+
         check_name_exercises_repeat = Exercises.query.filter_by(name=exercise_name_from_user).first()
         if check_name_exercises_repeat:
             flash("Ćwiczenie o podanej nazwie istnieje już w bazie!")
